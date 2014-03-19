@@ -19,10 +19,24 @@ public class L27 {
 		String[] strArray = {"good job", "hang in there", "spring break soon"};
 		for(int z = 0; z < strArray.length; z++){
 			printMessage(strArray[z]);
-			}
+		}
 		
 		double area = calcArea(4);
 		System.out.println("The area is " + area);
+		
+		//call calcArea using a radius between 1 and 10, in increments of 1
+		
+		for(int i = 1; i <= 10; i++){
+			area = calcArea(i);
+			System.out.println("The area is " + area);			
+		}
+		
+		//Hamming Distance
+		int[]a = {5,6,7,8};
+		int[]b = {6,7,8,9};
+		int[]c = {52,66,71,86};
+		
+		
 		
 	}
 	
@@ -30,8 +44,14 @@ public class L27 {
 	
 	public static double calcArea(double radius) {
 		double area = Math.PI*Math.pow(radius, 2);
-		return area;
-				
+		return area;				
 	}
+	
+//	public static in compareArrays(int[]a,int[]b){
+//		int diff = 0;
+//		for(int i = 0; i< a.length; i++){
+//			
+//		}
+//	}
 
 }
