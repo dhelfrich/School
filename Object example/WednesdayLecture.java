@@ -43,6 +43,40 @@ public class WednesdayLecture {
 		int wBlue = blueBug.width();
 		int hBlue = blueBug.height();
 		int wFinal = wRed + wBlue;
+		
+		/* But, the blank Picture is more useful as a 
+		 * container for creating new images by reading
+		 * images and putting them together, or adding
+		 * elements of color.
+		 * 
+		 * Exercise: How would you create a Picture that
+		 * contains both bugs side by side?
+		 * 
+		 * Create a Picture that is big enough to hold
+		 * both images side by side. The images are
+		 * the same height, so I will use the hRed. You
+		 * could also use hBlue and that would be fine.
+		 */ 
+		Picture bothBugs = new Picture(wFinal,hRed);
+		/*put red in first, starting at left edge
+		 * Do this by setting the pixel values of 
+		 * bothBugs to the redBug values.
+		 */ 
+		for(int x = 0; x < wRed; x++){
+			for(int y = 0; y < hRed; y++){
+				bothBugs.set(x, y, redBug.get(x, y));
+			}
+		}
+		bothBugs.show();
+		
+		for(int x=wRed; x<wRed+wBlue; x++){
+			for(int y = 0; y < hRed; y++){
+				//find correct color
+				Color c = blueBug.get(x-wRed,y);
+				bothBugs.set(x, y, c);
+			}
+		}
+		bothBugs.show();
 
 	}
 
