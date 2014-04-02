@@ -1,3 +1,4 @@
+import java.awt.Color;
 
 public class ObjectExamples {
 
@@ -19,9 +20,10 @@ public class ObjectExamples {
 		
 		int h = dolphin.height();
 		int w = dolphin.width();
-		Color c = dolphin.get(100,100);
+		Color c = dolphin.get(100, 100);
 				
 		System.out.println("height: "+h+" width: "+w);
+		System.out.println(c);
 			
 		Picture blank = new Picture(5000,600);
 		//blank.show();
