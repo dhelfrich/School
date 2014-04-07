@@ -53,7 +53,7 @@ public class Automobile {
 	 * gets a value from the object.
 	 */
 	public int getSpeed(){
-		return this.currentSpeed;
+		return currentSpeed;
 	}
 	/*
 	 * If we can get the speed, we may also want to set the speed.
