@@ -14,7 +14,6 @@ public class daniel_helfrich_assignment9 {
 		return newc;
 	}
 	
-	
 	public static void removeBlue(Picture pic){
 		int h = pic.height();
 		int w = pic.width();
