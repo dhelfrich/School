@@ -24,7 +24,7 @@ public class Lecture30ObjectExamples {
 		 * that Automobile class using the constructor
 		 * 
 		 */
-		Automobile subaru = new Automobile("Subaru","Outback",2005);
+		Automobile subaru = new Automobile("Subaru","Outback",2005, 10);
 		/*The class also has a method to set the speed and
 		 * get the speed of the subaru.
 		 * 

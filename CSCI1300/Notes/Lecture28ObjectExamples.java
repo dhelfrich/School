@@ -33,10 +33,10 @@ public class Lecture28ObjectExamples {
 		 * This calls the constructor in the Automobile
 		 * class, giving it the values for make, model, and year
 		 */
-		Automobile subaru = new Automobile("Subaru", "Outback", 2010);
+		Automobile subaru = new Automobile("Subaru", "Outback", 2010,60);
 		//create another Automobile, called prius
 		//Calls the constructor with different values
-		Automobile prius = new Automobile("Toyota", "Prius", 2005);
+		Automobile prius = new Automobile("Toyota", "Prius", 2005,1);
 		/*exercise: how would we change Automobile to include
 		 * other properties?
 		 */
