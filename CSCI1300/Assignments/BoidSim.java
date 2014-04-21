@@ -25,10 +25,14 @@ public class BoidSim
         
         
         // Create the 200 boids using a for loop and add them to the world
-    	for(int i = 0; i < 200; i++)
+    	
+    	int N = 200;
+    	
+    	Boid [] boidArray = new Boid [N];
+    	for(int i = 0; i < N; i++)
     	{
-    		Boid boid = new Boid(Math.random()*2000-1000,Math.random()*1400-700,Math.random()*1000-500,Math.random()*1000-500);
-    		world.addBoid(boid);
+    		boidArray[i] = new Boid(Math.random()*2000-1000,Math.random()*1400-700,Math.random()*1000-500,Math.random()*1000-500);
+    		world.addBoid(boidArray[i]);
     	}
         
         
@@ -40,8 +44,9 @@ public class BoidSim
 
     		long time = System.currentTimeMillis();
     		world.updateWorld();
+    		System.out.println("x: " + boidArray[1].calcCenter(boidArray,N)[0]+ " y: " + boidArray[1].calcCenter(boidArray,N)[1]);
     		
-    		while(System.currentTimeMillis() - time < 4)//wait 20 ms
+    		while(System.currentTimeMillis() - time < 10)//wait 20 ms
     		{
 
     		}

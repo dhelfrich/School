@@ -278,8 +278,8 @@ public class Boid {
       */
      private void matchVelocity(double groupVx, double groupVy)
      {
-         this.setVx(this.vx + groupVx / 8);
-         this.setVy(this.vy + groupVy / 8);         
+         this.setVx(this.vx + groupVx / 500);
+         this.setVy(this.vy + groupVy / 500);         
      }
      
      
@@ -288,8 +288,8 @@ public class Boid {
       */
      private void swerve()
      {
-         double randomVx = vx*(Math.random()-0.5)/10;
-         double randomVy = vy*(Math.random()-0.5)/10;
+         double randomVx = vx*(Math.random()-0.5)/100;
+         double randomVy = vy*(Math.random()-0.5)/100;
          
          this.setVx(this.vx + randomVx);
          this.setVy(this.vy + randomVy);
@@ -309,19 +309,19 @@ public class Boid {
          
          if(leftWallDistance < 100)
          {
-             this.setVx(this.vx + (120-leftWallDistance)/20);
+             this.setVx(this.vx + (120-leftWallDistance)/200);
          }
          if(rightWallDistance < 100)
          {
-             this.setVx(this.vx - (120-rightWallDistance)/20);             
+             this.setVx(this.vx - (120-rightWallDistance)/200);             
          }
          if(upperWallDistance < 100)
          {
-             this.setVy(this.vy + (120-upperWallDistance)/20);             
+             this.setVy(this.vy + (120-upperWallDistance)/200);             
          }
          if(lowerWallDistance < 100)
          {
-             this.setVy(this.vy - (120-lowerWallDistance)/20);             
+             this.setVy(this.vy - (120-lowerWallDistance)/200);             
          }
      }
      
@@ -350,8 +350,11 @@ public class Boid {
          this.setY(this.y + this.vy);
          
          //move away from mouse
-         setVx((mouseLoc[0] - this.x)*-.15 + this.vx);
-         setVy((mouseLoc[1] - this.y)*-.15 + this.vy);
+         double distance = Math.sqrt(Math.pow(mouseLoc[0] - this.x,2)+Math.pow(mouseLoc[1] - this.y,2));
+         double force = 200/(distance*distance);
+         
+         setVx(force*(mouseLoc[0] - this.x) + this.vx);
+         setVy(force*(mouseLoc[1] - this.y) + this.vy);
      }
      
      
