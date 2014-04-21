@@ -2,12 +2,39 @@
  \usepackage[margin=1in]{geometry} 
 \usepackage{amsmath,amsthm,amssymb,amsfonts}
  
+\usepackage{listings}
+\usepackage{color}
+\usepackage{fontspec}
+
+\newfontfamily\listingsfont[Scale=0.7]{Courier} 
+\newfontfamily\listingsfontinline[Scale=.9]{Courier} 
+\usepackage{color}
+\definecolor{sh_comment}{rgb}{0.12, 0.38, 0.18 } %adjusted, in Eclipse: {0.25, 0.42, 0.30 } = #3F6A4D
+\definecolor{sh_keyword}{rgb}{0.37, 0.08, 0.25}  % #5F1441
+\definecolor{sh_string}{rgb}{0.06, 0.10, 0.98} % #101AF9
+\def\lstsmallmath{\leavevmode\ifmmode \scriptstyle \else  \fi}
+\def\lstsmallmathend{\leavevmode\ifmmode  \else  \fi}
+\lstset {
+ frame=shadowbox,
+ rulesepcolor=\color{black},
+ showspaces=false,showtabs=false,tabsize=2,
+ numberstyle=\tiny,numbers=left,
+ basicstyle= \listingsfont,
+ stringstyle=\color{sh_string},
+ keywordstyle = \color{sh_keyword}\bfseries,
+ commentstyle=\color{sh_comment}\itshape,
+ captionpos=b,
+ xleftmargin=0.7cm, xrightmargin=0.5cm,
+ lineskip=-0.3em,
+ escapebegin={\lstsmallmath}, escapeend={\lstsmallmathend}
+}
+\newcommand{\lstJava}[1]{\lstinline[language=Java,breaklines=true,basicstyle= \listingsfontinline]$#1$}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
  
-\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\newenvironment{question}[2][Question]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
-%If you want to title your bold things something different just make another thing exactly like this but replace "problem" with the name of the thing you want, like theorem or lemma or whatever
+%If you want to title your bold things something different just make another thing exactly like this but replace "question" with the name of the thing you want, like theorem or lemma or whatever
  
 \begin{document}
  
@@ -21,13 +48,90 @@
 \author{Daniel Helfrich}
 \maketitle
  
-\begin{problem}{x.yz}
-Statement of problem goes here
-\end{problem}
- 
-\begin{proof}
-Proof goes here. needed
-\end{proof}
+\begin{question}{1}
+	
+	The line, \lstJava{Universe un = new Universe(zTurtles,z,600, 600);}
+	Creates a new universe or environment for the zombies. The universe
+	will have size 600 x 600 and contain \lstJava{zTurtles} turtles and
+	\lstJava{z} of which will be zombies.	
+
+\end{question}
+
+\begin{question}{2}
+	Each iteration of the for loop runs the simulation exactly one 
+	timestep. During each time step \lstJava{un.moveZombies()} and 
+	\lstJava{un.zombieAttack()} methods are executed and do basically
+	what they say they will do. If you wanted to run to simulation 1000
+	times, you could set \lstJava{N = 1000}.
+	
+\end{question}
+
+\begin{question}{3}
+	The Universe constructor first creates a w x h canvas. Then it initializes an array of turtles with 
+	\lstJava{numTurtles} elements. The \lstJava{tLocations} serves as an index that keeps track of all the 
+	locations in the universe. It is a w x h array of integers. If there is no turtle at a particular 
+	location, the array is set to $-1$ at that point. Otherwise, the array is set to the index of the turtle
+	located at that point.
+
+	The second for loop sets the locations of all the turtles. For the first \lstJava{numZombies} of the 
+	turtles, are set to be zombies. The rest of them are set to be normal turtles. Also in the for loop, the 
+	\lstJava{tLocations} variable is updated to reflect the locations of all the turtles.
+
+	
+\end{question}
+
+\begin{question}{4}
+	The instance method \lstJava{moveZombies()} is a function for the Universe class. It's goal, obviously is
+	to move the zombies. It moves them up to 8 spaces in either direction for both the x and y direction. The
+	line \lstJava{newX = min + (int)(Math.random() * ((max - min)+1));} creates a random integer between 
+	\lstJava{min} and \lstJava{max}. The next line:\\ 
+	\lstJava{if ((oldX+newX < 0) || (oldX+newX >= width))
+		newX = 0;}
+	Checks to see if adding this number the the location will move the turtle offscreen. If it will, then 
+	the turtle will not move at all in that direction. The rest of the code for that method updates the
+       	turtles' location as well as the \lstJava{tLocations} variable. (The old location is set to empty
+	and the new location is set to the turtle's index.
+	
+\end{question}
+
+\begin{question}{5}
+	The for loop in \lstJava{moveZombies} iterates through every zombie and moves them as described before.
+	
+\end{question}
+
+\begin{question}{6}
+	In \lstJava{zombieAttack}, there are three nested for loops. The outermost for loop along with the next 
+	if statement iterates through every infected zombie. The next four \lstJava{if / else} statements 
+	construct a box with a given radius around the infected zombie that remains inside the grid. The next 
+	two for loops iterate over every point in that radius and infects every turtle in the box.
+
+\end{question}
+
+\begin{question}{7}
+	The radius variable is used to determine the size of the box that the zombies affect. This determines 
+	how many points the for loops from the previous question loop over.
+	
+\end{question}
+
+\begin{question}{8}
+	The turtles are infected with the \lstJava{makeZombie()} method. This is applied to the turtles in the 
+	radius. This updates the instance variable \lstJava{zombie} in the Turtle class. It turns from false to 
+	true.
+	
+\end{question}
+
+\begin{question}{9}
+	The purpose of \lstJava{turtle[tLocations[x2][y2]]} is to refer to the instance of turtle and apply the 
+	\lstJava{makeZombie()} method to it. This line lies after the if statement that checks whether there is 
+	a turtle at that location.
+	
+\end{question}
+\begin{question}{10}
+	The visual display is updated in the \lstJava{setLocation()} method of the Turtles class. The method
+	first erases the old turtle's location. Then it updates the new location in red if the turtle is a zombie
+	and in blue otherwise.
+	
+\end{question}
 
 \end{document}
               
