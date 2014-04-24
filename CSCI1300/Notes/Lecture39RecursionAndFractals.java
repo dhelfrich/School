@@ -83,7 +83,7 @@ public class Lecture39RecursionAndFractals {
 		 * create an instance of tree. You will also
 		 * need the StdDraw in your project.
 		 */
-    	int branch = 2; 
+    	int branch = 10; 
         StdDraw.setCanvasSize(800, 800);
         Tree t = new Tree();
         t.tree(branch, .5, 0, Math.PI/2, .3);
