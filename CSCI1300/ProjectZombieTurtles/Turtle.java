@@ -46,7 +46,10 @@ public class Turtle {
 	    public void makeZombie()
 	    {
 	    	if(zombieState == "S")
+	    	{
 	    		this.zombieState = "I";
+	    		this.timeOfLastChange = uni.getDay();
+	    	}
 	    }
 	    
 	    public int getXLocation()

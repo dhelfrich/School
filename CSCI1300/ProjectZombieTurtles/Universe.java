@@ -47,18 +47,16 @@ public class Universe {
             for(int y = 0; y < height; y++)
                 tLocations[x][y] = -1;
         
-        /*Create the Turtles in the Universe and put 
-         * them at random (x,y) locations.
-         * Notice that the Turtle class also has 
-         * it's own constructor.
+        /* Make a bunch of susceptible turtles in this universe
+         * numZombies are infected, rest are susceptible
          */
         
         for(int i = 0; i < N; i++)
         {
             if (i < numZombies)
-                turtle[i] = new Turtle(true);
+                turtle[i] = new Turtle("I", this); //Turtles go inside "this" universe
             else
-                turtle[i] = new Turtle(false);
+                turtle[i] = new Turtle("S", this);
             //generate random integer location for each turtle
             int x = (int)(Math.random()*width);
             int y = (int)(Math.random()*height);
@@ -116,7 +114,7 @@ public class Universe {
          */
         for(int x = 0; x < N; x++)
         {
-            if(turtle[x].isZombie())
+            if(turtle[x].getZombieState() == "I")
             {
                 int locX = turtle[x].getXLocation();
                 int locY = turtle[x].getYLocation();
