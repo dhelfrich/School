@@ -1,4 +1,4 @@
-/* We needa virtual physical space in which to place our Turtle objects. We'll call this space Universe, which means that we have a Universe
+/* We need a virtual physical space in which to place our Turtle objects. We'll call this space Universe, which means that we have a Universe
  * object and in our Lecture31ObjectSpatialAwareness.java code, we'll create an instance of Universe.
  */
 
