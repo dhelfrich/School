@@ -10,13 +10,15 @@ public class Turtle {
 	    private int y;
 	    private String zombieState; //(S,I,R)
 	    private Universe uni;
-	    private int timeOfLastChange;
+	    private int dayOfLastChange;
+	    private int recoveryTime;
+	    private int immunityTime;
 	    
 	    public Turtle(String state, Universe uni)
 	    {
 	        this.zombieState = state;
 	        this.uni = uni;
-	        this.timeOfLastChange = this.uni.getDay();
+	        this.dayOfLastChange = this.uni.getDay();
 	    }
 	    
 	    public void setLocation(int xIn, int yIn)
@@ -38,6 +40,12 @@ public class Turtle {
 	        //StdDraw.show(1);
 	    }
 	    
+	    public void setRecImmTimes(int rec, int imm)
+	    {
+	    	this.recoveryTime = rec;
+	    	this.immunityTime = imm;
+	    }
+	    
 	    public String getZombieState()
 	    {
 	        return this.zombieState;
@@ -48,8 +56,32 @@ public class Turtle {
 	    	if(zombieState == "S")
 	    	{
 	    		this.zombieState = "I";
-	    		this.timeOfLastChange = uni.getDay();
+	    		this.dayOfLastChange = uni.getDay();
 	    	}
+	    }
+	    
+	    public void infectedToRecovered()
+	    {
+	    	if (this.zombieState == "I" && uni.getDay()-this.dayOfLastChange >= this.recoveryTime)
+	    	{
+	    		this.zombieState = "R";
+	    		this.dayOfLastChange = uni.getDay();
+	    	}
+	    }
+	    
+	    public void recoveredToSusceptible()
+	    {
+	    	if (this.zombieState == "R" && uni.getDay()-this.dayOfLastChange >= this.immunityTime)
+	    	{
+	    		this.zombieState = "S";
+	    		this.dayOfLastChange = uni.getDay();
+	    	}
+	    }
+	    
+	    public void updateState()
+	    {
+	    	this.infectedToRecovered();
+	    	this.recoveredToSusceptible();
 	    }
 	    
 	    public int getXLocation()
@@ -58,8 +90,10 @@ public class Turtle {
 	    }
 	    
 	    public int getYLocation()
+
 	    {
 	        return this.y;
 	    }
 
+	    
 }

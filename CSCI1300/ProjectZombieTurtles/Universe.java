@@ -15,13 +15,8 @@ public class Universe {
     private int height;
     private int day = 0;
     private double probability;
-    
-    /*we want to have objects interact, so radius is how many 
-     * squares around the Turtle can the Turtle "see". We are 
-     * assuming that space
-     * is discrete here, that each Turtle has an (x,y) position 
-     * on the grid.
-     */
+    private int recoveryTime;
+    private int immunityTime;
     private int radius;
     
     /*the constructor, takes an int and uses this to create N 
@@ -35,7 +30,6 @@ public class Universe {
 
         /*set the Universe instance variables using arguments to the 
          * Universe constructor*/
-        radius = 10;
         tLocations = new int[w][h];
         N = numTurtles;
         turtle = new Turtle[N];
@@ -67,15 +61,26 @@ public class Universe {
             /*setLocation is a method in Turtle. We call 
              * it here to set the turtle location*/
             turtle[i].setLocation(x, y);
+            //set the parameters for the turtle
+            turtle[i].setRecImmTimes(recoveryTime, immunityTime);
         }
     }
     
-    public void setProbability(double z)
+    public void setParameters(double p, int rec, int imm, int rad)
     {
-    	this.probability = z;
+    	this.probability = p;
+    	this.recoveryTime = rec;
+    	this.immunityTime = imm;
+    	this.radius = rad;
     }
     
-    public void moveZombies()
+    public int [] getRecImmTime()
+    {
+    	int [] params = {this.recoveryTime, this.immunityTime};
+    	return params;
+    }
+    
+    public void updateZombies() //moves zombies and makes I -> R and S -> I
     {
         /*This method is part of the Universe and 
          * determines how each turtle will move given 
@@ -105,6 +110,7 @@ public class Universe {
           tLocations[oldX][oldY] = -1;
           tLocations[oldX+newX][oldY+newY] = x;
           turtle[x].setLocation(oldX+newX, oldY+newY);
+          turtle[x].updateState();
         }
     }
     
