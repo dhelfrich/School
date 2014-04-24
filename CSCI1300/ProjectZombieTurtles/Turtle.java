@@ -26,9 +26,9 @@ public class Turtle {
 	        StdDraw.filledCircle((double)this.x, (double)this.y, 6);
 
 	        if (this.zombieState == "S") 
-	            StdDraw.setPenColor(StdDraw.RED);
-	        else if(this.zombieState == "I")
 	            StdDraw.setPenColor(StdDraw.BLUE);
+	        else if(this.zombieState == "I")
+	            StdDraw.setPenColor(StdDraw.RED);
 	        else if(this.zombieState == "R")
 	        	StdDraw.setPenColor(StdDraw.GREEN);
 	        

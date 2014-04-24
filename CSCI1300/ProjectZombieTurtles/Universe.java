@@ -114,7 +114,7 @@ public class Universe {
          */
         for(int x = 0; x < N; x++)
         {
-            if(turtle[x].getZombieState() == "I")
+            if(turtle[x].getZombieState() == "I") //infect all turtles in a given radius
             {
                 int locX = turtle[x].getXLocation();
                 int locY = turtle[x].getYLocation();
