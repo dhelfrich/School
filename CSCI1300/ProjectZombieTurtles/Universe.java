@@ -13,6 +13,8 @@ public class Universe {
     private int tLocations[][];
     private int width;
     private int height;
+    private int day = 0;
+    private double probability;
     
     /*we want to have objects interact, so radius is how many 
      * squares around the Turtle can the Turtle "see". We are 
@@ -69,6 +71,12 @@ public class Universe {
             turtle[i].setLocation(x, y);
         }
     }
+    
+    public void setProbability(double z)
+    {
+    	this.probability = z;
+    }
+    
     public void moveZombies()
     {
         /*This method is part of the Universe and 
@@ -101,6 +109,7 @@ public class Universe {
           turtle[x].setLocation(oldX+newX, oldY+newY);
         }
     }
+    
     public void zombieAttack()
     {
         /* Spread zombie-ism
@@ -152,5 +161,13 @@ public class Universe {
         }
     }
     
+    public void nextDay()
+    {
+    	this.day++;
+    }
     
+    public int getDay()
+    {
+    	return this.day;
+    }
 }

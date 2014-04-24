@@ -8,36 +8,47 @@ public class Turtle {
 	 */
 	    private int x;
 	    private int y;
-	    private boolean zombie;
+	    private String zombieState; //(S,I,R)
+	    private Universe uni;
+	    private int timeOfLastChange;
 	    
-	    public Turtle(boolean z)
+	    public Turtle(String state, Universe uni)
 	    {
-	        this.zombie = z;
+	        this.zombieState = state;
+	        this.uni = uni;
+	        this.timeOfLastChange = this.uni.getDay();
 	    }
+	    
 	    public void setLocation(int xIn, int yIn)
 	    {
 	        //erase old zombie location
 	        StdDraw.setPenColor(StdDraw.WHITE);
 	        StdDraw.filledCircle((double)this.x, (double)this.y, 6);
 
-	        if (this.zombie == true) 
+	        if (this.zombieState == "S") 
 	            StdDraw.setPenColor(StdDraw.RED);
-	        else
-	            StdDraw.setPenColor(Color.BLUE);
+	        else if(this.zombieState == "I")
+	            StdDraw.setPenColor(StdDraw.BLUE);
+	        else if(this.zombieState == "R")
+	        	StdDraw.setPenColor(StdDraw.GREEN);
 	        
 	        this.x = xIn;
 	        this.y = yIn;
 	        StdDraw.filledCircle((double)this.x, (double)this.y, 5);
 	        //StdDraw.show(1);
 	    }
-	    public boolean isZombie()
+	    
+	    public String getZombieState()
 	    {
-	        return this.zombie;
+	        return this.zombieState;
 	    }
+	    
 	    public void makeZombie()
 	    {
-	    	this.zombie = true;
+	    	if(zombieState == "S")
+	    		this.zombieState = "I";
 	    }
+	    
 	    public int getXLocation()
 	    {
 	        return this.x;

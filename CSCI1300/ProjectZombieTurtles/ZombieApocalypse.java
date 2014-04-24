@@ -16,6 +16,7 @@ public class ZombieApocalypse {
          * 
          */
         Universe un = new Universe(zTurtles,z,600, 600);
+        un.setProbability(Double.parseDouble(args[0]));
         /*our simulation will run for N iterations */
         for(int i = 0; i < N; i++)
         {
