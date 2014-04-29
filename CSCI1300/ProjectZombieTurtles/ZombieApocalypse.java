@@ -7,9 +7,9 @@ public class ZombieApocalypse {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
         // set some number to be zombies
-        int z = 20;
+        int z = 1;
         //this is number of total ZombieTurtles, only z of which are initially zombies
-        int zTurtles = 300;
+        int zTurtles = 800;
         int N = 250;
         double probability = Double.parseDouble(args[0]);
         int recoveryTime = Integer.parseInt(args[1]);
@@ -19,7 +19,7 @@ public class ZombieApocalypse {
          * come in contact with other turtles that are inflicted with zombie-ism
          * 
          */
-        Universe un = new Universe(600, 600);
+        Universe un = new Universe(400, 400);
         un.setParameters(probability,recoveryTime,immunityTime,radius);
         un.addTurtles(zTurtles, z);
         /*our simulation will run for N iterations */

@@ -123,7 +123,7 @@ public class Universe {
          */
         for(int x = 0; x < N; x++)
         {
-            if(turtle[x].getZombieState() == "I") //infect all turtles in a given radius
+        	if(turtle[x].getZombieState() == "I") //infect all turtles in a given radius
             {
                 int locX = turtle[x].getXLocation();
                 int locY = turtle[x].getYLocation();
@@ -131,37 +131,34 @@ public class Universe {
                 int xHigh;
                 int yLow;
                 int yHigh;
-
                 if (locX - radius < 0)
                     xLow = 0;
                 else
                     xLow = locX - radius;
-
                 if (locX + radius >= width)
-                xHigh = width-1;
+                	xHigh = width-1;
                 else
                     xHigh = locX + radius;
-
                 if (locY - radius < 0)
                     yLow = 0;
                 else
                     yLow = locY - radius;
-
                 if (locY + radius >= height)
                     yHigh = height-1;
                 else
                     yHigh = locY + radius;
-
                 for(int x2 = xLow; x2 < xHigh; x2++)
                 {
                     for(int y2 = yLow; y2 < yHigh; y2++)
                     {
                         if(tLocations[x2][y2] >= 0) //there's a turtle there to infect
                         {
-                            turtle[tLocations[x2][y2]].makeZombie();
-                            //System.out.println("zombie attack");
+                        	if(Math.random()<this.probability)
+                        	{
+                        		turtle[tLocations[x2][y2]].makeZombie();
+                        		//System.out.println("zombie attack");
+                        	}
                         }
-
                     }
                 }  
             }
