@@ -21,26 +21,29 @@ public class Universe {
     
     /*the constructor, takes an int and uses this to create N 
      * instances of Turtle and place them in the Universe.*/
-    public Universe(int numTurtles, int numZombies, int w, int h)
+    public Universe(int w, int h)
     {
-        StdDraw.setCanvasSize(w, h);
-        StdDraw.setXscale(0, w);
-        StdDraw.setYscale(0, h);
-
-
+    	 StdDraw.setCanvasSize(w, h);
+         StdDraw.setXscale(0, w);
+         StdDraw.setYscale(0, h);
+         this.width = w;
+         this.height = h;
+         tLocations = new int[width][height];
+         /*initialize tLocations to have no turtle anywhere on the grid*/
+         for(int x = 0; x < width; x++)
+             for(int y = 0; y < height; y++)
+                 tLocations[x][y] = -1;
+         
+    }
+    
+    public void addTurtles(int numTurtles, int numZombies)
+    {
         /*set the Universe instance variables using arguments to the 
          * Universe constructor*/
-        tLocations = new int[w][h];
         N = numTurtles;
         turtle = new Turtle[N];
-        
-        width = w;
-        height = h;
-        /*initialize tLocations to have no turtle anywhere on the grid*/
-        for(int x = 0; x < width; x++)
-            for(int y = 0; y < height; y++)
-                tLocations[x][y] = -1;
-        
+
+
         /* Make a bunch of susceptible turtles in this universe
          * numZombies are infected, rest are susceptible
          */

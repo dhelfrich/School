@@ -19,8 +19,9 @@ public class ZombieApocalypse {
          * come in contact with other turtles that are inflicted with zombie-ism
          * 
          */
-        Universe un = new Universe(zTurtles,z,600, 600);
+        Universe un = new Universe(600, 600);
         un.setParameters(probability,recoveryTime,immunityTime,radius);
+        un.addTurtles(zTurtles, z);
         /*our simulation will run for N iterations */
         for(int i = 0; i < N; i++)
         {
