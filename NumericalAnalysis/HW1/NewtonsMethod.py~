@@ -1,0 +1,37 @@
+#Newtons Method
+import math
+out = open("NewtonsOut.txt","w")
+out.write("Newtons Method")
+
+
+#This is the function we will be studying
+def fun(x):
+    return (x + math.exp(x))
+
+#Here is its derivative
+def der(x):
+    return (1 + math.exp(x))
+
+#Newton's Method
+#Inputs are guess, tolerance, max iter, the function and its derivative 
+
+def newtons(guess, tol, N, f, df):
+    i = 0
+    guesses = [guess]
+    while math.fabs(fun(guesses[i])) > tol and i<N:
+        info = "Iteration: {} x: {:.8f}".format(i, guesses[i])
+        print(info)
+        out.write(info + "\n")
+        p0 = guesses[i]
+        p = p0 - f(p0)/df(p0) 
+        guesses.append(p)
+        i += 1
+
+    info = "Iteration: {} x: {:.8f} f(x): {:.8f}".format(i, guesses[i], fun(guesses[i]))
+    print(info)
+    out.write(info + "\n")
+
+def main():
+    newtons(0.5, 0.0001, 50, fun, der)
+
+main()

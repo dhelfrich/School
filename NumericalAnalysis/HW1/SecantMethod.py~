@@ -1,0 +1,40 @@
+#Secant Method
+import math
+out = open("SecantOut.txt","w")
+out.write("Secant Method")
+
+
+#This is the function we will be studying
+def fun(x):
+    return (x + math.exp(x))
+
+#Secant Method
+#Inputs are guess1, guess2, tolerance, max iter, and the function 
+
+def secant(guess1, guess2, tol, N, f):
+    i = 1
+    guesses = [guess1, guess2]
+    info = "Iteration: {} x: {:.10f} f(x): {:.10f}".format(0, guesses[0], fun(guesses[i]))
+    print(info)
+    out.write(info + "\n")
+    while math.fabs(fun(guesses[i])) > tol and i<N:
+        info = "Iteration: {} x: {:.10f} f(x): {:.10f}".format(i, guesses[i], fun(guesses[i]))
+        print(info)
+        out.write(info + "\n")
+        #Change notation to p0, p1, .... etc
+        p0 = guesses[i-1]
+        p1 = guesses[i]
+        q0 = f(p0)
+        q1 = f(p1)
+        p = p1 - q1*(p1-p0)/(q1-q0) 
+        guesses.append(p)
+        i += 1
+
+    info = "Iteration: {} x: {:.10f} f(x): {:.10f}".format(i, guesses[i], fun(guesses[i]))
+    print(info)
+    out.write(info + "\n")
+
+def main():
+    secant(-1,1, 0.0001, 50, fun)
+
+main()

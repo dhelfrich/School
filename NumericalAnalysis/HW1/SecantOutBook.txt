@@ -1,0 +1,7 @@
+Secant MethodIteration: 0 x: 0.5000000000
+Iteration: 1 x: 0.7853981634
+Iteration: 2 x: 0.7363841388
+Iteration: 3 x: 0.7390581392
+Iteration: 4 x: 0.7390851493
+Iteration: 5 x: 0.7390851332
+Iteration: 6 x: 0.7390851332

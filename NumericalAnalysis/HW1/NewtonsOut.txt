@@ -1,0 +1,6 @@
+Newtons MethodIteration: 0 x: 0.500000000000000 Relative Error: 1.000100000000000
+Iteration: 1 x: -0.311229665600927 Relative Error: 2.606530659712634
+Iteration: 2 x: -0.554407072604111 Relative Error: 1.622459331201854
+Iteration: 3 x: -0.567113824854529 Relative Error: 0.781343920200064
+Iteration: 4 x: -0.567143290252680 Relative Error: 0.022919534901915
+Iteration: 5 x: -0.567143290409784 Relative Error: 0.000051956762222
