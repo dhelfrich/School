@@ -6,6 +6,7 @@ using namespace std;
 void init(int_array& arr)
 {
     arr.count = 0;
+    //make sure to initialize with new
     arr.data = new int[arr.DEFAULT_CAPACITY];
     arr.capacity = arr.DEFAULT_CAPACITY;
 }
@@ -36,6 +37,7 @@ bool contains(const int_array& arr, const int& target)
     {
         if (arr.data[i] == target) 
             return true;
+        //else statement unnecessary
     }
     return false;
 }
@@ -55,10 +57,10 @@ void resize(int_array& arr)
 void add(int_array& arr, const int& payload)
 {
 
-    if (arr.count == arr.capacity)
+    if (arr.count == arr.capacity) //need == not = 
         resize(arr);
 
-    arr.data[arr.count++] = payload;
+    arr.data[arr.count++] = payload; //put ++ at end
 }
 
 bool remove(int_array& arr, const int& target)
@@ -68,15 +70,17 @@ bool remove(int_array& arr, const int& target)
     if (arr.count == 0) 
         return false;
 
-    while (i < arr.count && arr.data[i] != target)
-        i++;
-
-    if (arr.data[i] == target)
+    while (i < arr.count) //put everything inside while loop
     {
-        arr.count--;
-        arr.data[i] = arr.data[arr.count];
+        if (arr.data[i] == target) //put brackets around if statement
+        {
+            arr.count--; //decrease count before moving everything
+            arr.data[i] = arr.data[arr.count];
+            return true;
+        }
+        i++; //move i++ to end
     }
 
-    return true;
+    return false; //should return false by default
 }
 
