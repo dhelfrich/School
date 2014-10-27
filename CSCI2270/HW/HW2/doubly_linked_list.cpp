@@ -21,6 +21,8 @@ void add_node(node*& head_ptr, node*& tail_ptr, const char& payload)
 		{
 			added_node->next = head_ptr;
 			added_node->prev = nullptr;
+			// BUG FIXED
+			head_ptr->prev = added_node;
 			head_ptr = added_node;
 		}
 		else
@@ -43,6 +45,8 @@ void add_node(node*& head_ptr, node*& tail_ptr, const char& payload)
 			{
 				added_node->next = cursor->next;
 				added_node->prev = cursor;
+				// BUG FIXED
+				cursor->next->prev = cursor;
 				cursor->next = added_node;
 			}
 		}
@@ -160,7 +164,7 @@ void copy_list(const node* source_head_ptr,
 		cursor->next = new node();
 		cursor->next->data = source_head_ptr->data;
 		cursor->next->next = nullptr;
-		// set the previous pocharer for the node we just made
+		// set the previous pointer for the node we just made
 		cursor->next->prev = cursor;
 		cursor = cursor->next;
 		dest_tail_ptr = cursor;
