@@ -7,7 +7,7 @@ big_number::big_number()
 {
     head_ptr = nullptr;
     tail_ptr = nullptr;
-    add_node(head_ptr, tail_ptr, '0');
+    add_node_head(head_ptr, tail_ptr, '0');
     digits = 1;
     positive = true;
     base = 10;
@@ -33,25 +33,9 @@ big_number::big_number(int i)
         }
         else 
             positive = true;
-        while ( i < 0 )
+        while ( i != 0 )
         {
-            if (head_ptr != nullptr)
-            {
-                head_ptr->prev = new node;
-                head_ptr->prev->data = ( i % 10 ) + '0';
-                head_ptr->prev->next = head_ptr;
-                head_ptr = head_ptr->prev;
-
-            }
-
-            else
-            {
-                head_ptr = new node;
-                head_ptr->data = ( i % 10 ) + '0';
-                tail_ptr = head_ptr;
-                head_ptr->prev = nullptr;
-                head_ptr->next = nullptr;
-            }
+            add_node_head(head_ptr, tail_ptr, (i % 10) + '0');
             ++digits;
             i /= 10;
         }
@@ -70,7 +54,7 @@ big_number::big_number(const string& s, unsigned int b)
 {
 
     digits = 0;
-    int index = 0;
+    unsigned index = 0;
     positive = true;
     if (s[0] == '-')
     {
@@ -85,6 +69,13 @@ big_number::big_number(const string& s, unsigned int b)
     head_ptr->next = nullptr;
     head_ptr->prev = nullptr;
     tail_ptr = head_ptr;
+
+    while ( index < s.length()  )
+    {
+        add_node_tail(head_ptr, tail_ptr, s[index]);
+        ++digits;
+        ++index;
+    }
 
 }
 
@@ -174,8 +165,13 @@ bool operator!=(const big_number& a, const big_number& b)
 
 ostream& operator <<(ostream& out, const big_number& n)
 {
-    out << n.head_ptr->data;
+    node* cursor = n.head_ptr;
 
+    for (unsigned i = 0; i < n.digits; i++)
+    {
+        out << cursor->data;
+        cursor = cursor->next;
+    }
     return out;
 }
 

@@ -6,7 +6,11 @@ struct node {
 	node* prev;
 };
 
-void add_node(node*& head_ptr, node*& tail_ptr, const char& payload);
+void add_node_ordered(node*& head_ptr, node*& tail_ptr, const char& payload);
+
+void add_node_head(node*& head_ptr, node*& tail_ptr, const char& payload);
+
+void add_node_tail(node*& head_ptr, node*& tail_ptr, const char& payload);
 
 bool remove_node(node*& head_ptr, node*& tail_ptr, const char& target);
 
