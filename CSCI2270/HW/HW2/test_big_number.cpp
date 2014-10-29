@@ -30,7 +30,8 @@ int main()
 		{
 			cout << "Enter an integer: ";
 			cin >> n1;
-			big_number b(n1);
+			//big_number b(n1);
+                        big_number b = big_number(n1);
 			cout << "Int constructor with " << n1 << " gives " << b << endl;
 		}
 		

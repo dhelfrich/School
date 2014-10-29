@@ -46,8 +46,15 @@ big_number::big_number(int i)
 // copy constructor, creates a deep copy of m
 big_number::big_number(const big_number& m)
 {
+    head_ptr = nullptr;
+    tail_ptr = nullptr;
+    digits = m.digits;
+    positive = m.positive;
+    base = m.base;
+    copy_list(m.head_ptr, head_ptr, tail_ptr);
 
 }
+
 
 // create a big_number from a string
 big_number::big_number(const string& s, unsigned int b)
@@ -56,6 +63,7 @@ big_number::big_number(const string& s, unsigned int b)
     digits = 0;
     unsigned index = 0;
     positive = true;
+    base = b;
     if (s[0] == '-')
     {
         positive = false;
@@ -66,9 +74,20 @@ big_number::big_number(const string& s, unsigned int b)
         ++index;
     }
     head_ptr = new node;
-    head_ptr->next = nullptr;
-    head_ptr->prev = nullptr;
-    tail_ptr = head_ptr;
+    head_ptr = nullptr;
+    tail_ptr = nullptr;
+    
+    while ( s[index] == '0' ) //remove leading zeroes
+    {
+        if ( index + 1 < s.length() ) //only remove leading zeroes if it's not the last digit
+            index++;
+        else //get here if input is zero
+        {
+            positive = true; //zero is positive!
+            break;
+        }
+            
+    }
 
     while ( index < s.length()  )
     {
@@ -82,12 +101,25 @@ big_number::big_number(const string& s, unsigned int b)
 // destructor
 big_number::~big_number()
 {
-
+    clear_list( head_ptr, tail_ptr );
+    digits = 0;
+    base = 0;
+    positive = 0;
 }
 
 // assignment operator
 big_number& big_number::operator=(const big_number& m)
 {
+    if (this == &m)
+        return *this;
+
+    head_ptr = nullptr;
+    tail_ptr = nullptr;
+    digits = m.digits;
+    positive = m.positive;
+    base = m.base;
+    copy_list(m.head_ptr, head_ptr, tail_ptr);
+
     return *this;
 }
 
@@ -135,36 +167,59 @@ big_number& big_number::operator--()
 
 bool operator >(const big_number& a, const big_number& b)
 {
-    return false;
+    if ( compare(a,b) == 'G')
+        return true;
+    else
+        return false;
+
 }
 
 bool operator >=(const big_number& a, const big_number& b)
 {
-    return false;
+    if ( compare(a,b) == 'G' || compare(a,b) == 'E')
+        return true;
+    else
+        return false;
 }
 
 bool operator <(const big_number& a, const big_number& b)
 {
-    return false;
+    if ( compare(a,b) == 'L' )
+        return true;
+    else
+        return false;
 }
 
 bool operator <=(const big_number& a, const big_number& b)
 {
-    return false;
+    if ( compare(a,b) == 'L' || compare(a,b) == 'E')
+        return true;
+    else
+        return false;
 }
 
 bool operator==(const big_number& a, const big_number& b)
 {
-    return false;
+    if (compare(a,b) == 'E')
+        return true;
+    else
+        return false;
 }
 
 bool operator!=(const big_number& a, const big_number& b)
 {
-    return false;
+    if (compare(a,b) != 'E')
+        return true;
+    else
+        return false;
 }
 
 ostream& operator <<(ostream& out, const big_number& n)
 {
+
+    if ( n.positive == false ) //if negative, print the negative sign
+        out << '-';
+
     node* cursor = n.head_ptr;
 
     for (unsigned i = 0; i < n.digits; i++)
@@ -177,6 +232,9 @@ ostream& operator <<(ostream& out, const big_number& n)
 
 istream& operator >>(istream& in, big_number& n)
 {
+    string number;
+    in >> number; 
+    n = big_number (number, 10);
     return in;
 }
 
@@ -216,4 +274,50 @@ big_number factorial(const big_number& a)
     return answer;
 }
 
+//Helper functions
 
+
+//returns 'G' 'L' or 'E' for >, <, or == respectively 
+char absoluteValueCompare (const big_number& a, const big_number& b)
+{
+    if (a.digits > b.digits )
+        return 'G';
+    else if (a.digits < b.digits)
+        return 'L';
+    else //compare digits starting after 1
+    {
+        node* cursor_a = a.head_ptr;
+        node* cursor_b = b.head_ptr;
+        for (unsigned i = 0; i < a.digits; i++) 
+        {
+            if (cursor_a->data > cursor_b->data)
+                return 'G';
+            else if(cursor_a->data < cursor_b->data )
+                return 'L';
+            cursor_a = cursor_a->next;
+            cursor_b = cursor_b->next;
+        }
+        return 'E'; 
+    } 
+}
+
+//returns 'G' 'L' or 'E' based on sign only for >, <, or == respectively 
+
+char signCompare (const big_number& a, const big_number& b)
+{
+    if ( a.positive == b.positive )
+        return 'E';
+    else if ( a.positive )
+        return 'G';
+    else
+        return 'L';
+}
+
+char compare  (const big_number& a, const big_number& b)
+{
+    if ( signCompare(a,b) == 'E' )
+        return absoluteValueCompare(a, b);
+    else
+        return signCompare(a,b);
+    
+}
