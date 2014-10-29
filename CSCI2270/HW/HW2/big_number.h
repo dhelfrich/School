@@ -63,8 +63,8 @@ class big_number
         unsigned int base;
 
         // helper functions can go here
-        friend inline char absoluteValueCompare (const big_number& a, const big_number& b); 
-        friend inline char signCompare (const big_number& a, const big_number& b);
-        friend inline char compare (const big_number& a, const big_number& b); 
+        friend char absoluteValueCompare (const big_number& a, const big_number& b); 
+        friend char signCompare (const big_number& a, const big_number& b);
+        friend char compare (const big_number& a, const big_number& b); 
 
 };
