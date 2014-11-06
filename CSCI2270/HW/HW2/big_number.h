@@ -10,6 +10,7 @@ class big_number
         big_number();
         big_number(int i);
         big_number(const big_number& m);
+        big_number(const big_number& m, unsigned int base);
         big_number(const string& s, unsigned int base);
 
         // assignment operator
@@ -62,9 +63,15 @@ class big_number
         bool positive;
         unsigned int base;
 
+        //Alphabet
+        string alpha = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
         // helper functions can go here
+        big_number& sum(const big_number& m);
+        big_number& minus(const big_number& m);
+        void trim();
         friend char absoluteValueCompare (const big_number& a, const big_number& b); 
         friend char signCompare (const big_number& a, const big_number& b);
         friend char compare (const big_number& a, const big_number& b); 
-
 };
+

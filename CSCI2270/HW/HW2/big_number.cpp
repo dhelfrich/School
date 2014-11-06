@@ -17,6 +17,7 @@ big_number::big_number()
 big_number::big_number(int i)
 {
     digits = 0;
+    base = 10;
     head_ptr = nullptr;
     tail_ptr = nullptr;
     if (i==0)
@@ -40,7 +41,6 @@ big_number::big_number(int i)
             i /= 10;
         }
     }
-
 }
 
 // copy constructor, creates a deep copy of m
@@ -55,6 +55,11 @@ big_number::big_number(const big_number& m)
 
 }
 
+//conversion contructor, converts a bignum into another base
+big_number::big_number(const big_number& m, unsigned int base)
+{
+
+}
 
 // create a big_number from a string
 big_number::big_number(const string& s, unsigned int b)
@@ -102,9 +107,6 @@ big_number::big_number(const string& s, unsigned int b)
 big_number::~big_number()
 {
     clear_list( head_ptr, tail_ptr );
-    digits = 0;
-    base = 0;
-    positive = 0;
 }
 
 // assignment operator
@@ -164,6 +166,8 @@ big_number& big_number::operator--()
 {
     return *this;
 }
+
+
 
 bool operator >(const big_number& a, const big_number& b)
 {
@@ -241,12 +245,64 @@ istream& operator >>(istream& in, big_number& n)
 big_number operator+(const big_number& a, const big_number& b)
 {
     big_number answer;
+    if (a.positive == b.positive)//if it's essentially a sum
+    {
+        if(a.digits > b.digits) //add b to a
+        {
+            answer = a;
+            answer.sum(b);
+        }
+        else
+        {
+            answer = b;
+            answer.sum(a);
+        }
+    }
+    else
+    {
+        if(absoluteValueCompare(a,b) == 'G')
+        {
+            answer = a;
+            answer.minus(b);
+        }
+        else
+        {
+            answer = b;
+            answer.minus(a);
+        }
+    } 
     return answer;
 }
 
 big_number operator-(const big_number& a, const big_number& b)
 {
     big_number answer;
+    if (a.positive == b.positive)//if it's essentially a sum
+    {
+        if(a.digits > b.digits) //add b to a
+        {
+            answer = a;
+            answer.sum(b);
+        }
+        else
+        {
+            answer = b;
+            answer.sum(a);
+        }
+    }
+    else
+    {
+        if(absoluteValueCompare(a,b) == 'G')
+        {
+            answer = a;
+            answer.minus(b);
+        }
+        else
+        {
+            answer = b;
+            answer.minus(a);
+        }
+    } 
     return answer;
 }
 
@@ -276,6 +332,125 @@ big_number factorial(const big_number& a)
 
 //Helper functions
 
+
+// helper function: assume |*this| >= |m|
+big_number& big_number::sum(const big_number& m)
+{
+    node* cursor = tail_ptr;
+    const node* mcursor = m.tail_ptr;
+    digits = 0;  // a little scary, but let's roll with it anyway
+    unsigned int dig1, dig2, result;
+    unsigned int carry = 0;
+    while (cursor != nullptr && mcursor != nullptr)
+    {
+        // we added an alphabet string to the big_number.h
+        dig1 = alpha.find(cursor->data);
+        dig2 = alpha.find(mcursor->data);
+        result = carry + dig1 + dig2;
+        if (result >= base) // we have to carry
+        {
+            // this code is simpler, more correct and more elegant; 
+            // thanks to Audi Li!
+            cursor->data = alpha[result % base];
+            carry = 1;
+        }
+        else // we don't have to carry
+        {
+            cursor->data = alpha[result];
+            carry = 0;
+        }
+        cursor = cursor->prev;
+        mcursor = mcursor->prev;
+        ++digits;
+    }
+    while (cursor != nullptr)
+    {
+        dig1 = alpha.find(cursor->data);
+        result = carry + dig1;
+        if (result >= base) // carry
+        {
+            cursor->data = alpha[result % base];
+            carry = 1;
+        }
+        else // no carry
+        {
+            cursor->data = alpha[result];
+            carry = 0;
+        }
+        cursor = cursor->prev;
+        ++digits;
+    }
+
+    if (carry > 0)
+    {
+        add_node_head(head_ptr, tail_ptr, '1');
+        ++digits;
+    }
+    return *this;
+}
+
+
+// helper function: assume |*this| >= |m|
+big_number& big_number::minus(const big_number& m)
+{
+    node* cursor = tail_ptr;
+    const node* mcursor = m.tail_ptr;
+    int dig1, dig2, result;
+    int borrow = 0;
+
+    while (cursor != nullptr && mcursor != nullptr)
+    {
+        dig1 = alpha.find(cursor->data) - borrow; //take away borrow
+        dig2 = alpha.find(mcursor->data);
+        //if (dig1 < 0)
+        //{
+        //    result = base - dig2 - 1;
+        //}
+        if (dig1 < dig2)
+        {
+            result = base + dig1 - dig2;
+            borrow = 1;
+        }
+        else //no borrow
+        {
+            result = dig1 - dig2;
+            borrow = 0;
+        }
+        cursor->data = alpha[result]; 
+        cursor = cursor->prev;
+        mcursor = mcursor->prev;
+    }
+
+    while (cursor != nullptr) //same as above..replace dig2 with 0
+    {
+        dig1 = alpha.find(cursor->data) - borrow; //take away borrow
+        if (dig1 < 0)
+        {
+            result = base + dig1;
+            borrow = 1;
+        }
+        else //no borrow
+        {
+            result = dig1;
+            borrow = 0;
+        }
+        cursor->data = alpha[result]; 
+        cursor = cursor->prev;
+    }
+    this->trim();
+    return *this;
+}
+
+void big_number::trim()
+{
+    while (head_ptr != tail_ptr && head_ptr->data == '0')
+    {
+        --digits;
+        head_ptr = head_ptr->next;
+        delete head_ptr->prev;
+        head_ptr->prev = nullptr;
+    }
+}
 
 //returns 'G' 'L' or 'E' for >, <, or == respectively 
 char absoluteValueCompare (const big_number& a, const big_number& b)
@@ -316,8 +491,19 @@ char signCompare (const big_number& a, const big_number& b)
 char compare  (const big_number& a, const big_number& b)
 {
     if ( signCompare(a,b) == 'E' )
-        return absoluteValueCompare(a, b);
+    {
+        if (!a.positive)//if both negative
+        {
+            if (absoluteValueCompare(a,b) == 'L')
+                return 'G';
+            else if (absoluteValueCompare(a,b) == 'G')
+                return 'L';
+            else
+                return absoluteValueCompare(a,b);
+        } 
+        else
+            return absoluteValueCompare(a, b);
+    }
     else
-        return signCompare(a,b);
-    
+        return signCompare(a,b); 
 }
