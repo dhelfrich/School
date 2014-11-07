@@ -55,6 +55,7 @@ class big_number
         friend bool operator==(const big_number& a, const big_number& b);
         friend bool operator!=(const big_number& a, const big_number& b);
 
+        big_number mult_digit(char d);
     private:
 
         node* head_ptr;

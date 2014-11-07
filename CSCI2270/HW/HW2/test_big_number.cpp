@@ -7,6 +7,7 @@ int main()
     int n1, n2;
     unsigned int base;
     string s;
+    char c;
 
     char choice;
     do
@@ -17,6 +18,11 @@ int main()
         cout << "Type 'c' to test conversion constructor" << endl;
         cout << "Type 'a' to test assignment" << endl;
         cout << "Type '>' to test input operator" << endl;
+
+        cout << "Type 'u' to test mult_digit operator" << endl;
+        cout << "Type 'p' to test + operator" << endl;
+        cout << "Type 'm' to test - operator" << endl;
+        cout << "Type 't' to test * operator" << endl;
 
         cout << "Type '+' to test += operator" << endl;
         cout << "Type '-' to test -= operator" << endl;
@@ -76,7 +82,20 @@ int main()
             cout << "You entered " << e << endl;
         }
 
-        if (choice == '+')
+        if (toupper(choice) == 'U')
+        {
+            cout << "Enter a number: ";
+            cin >> n1;
+            cout << "Enter a base: ";
+            cin >> base;
+            cout << "Enter another number (Digit): ";
+            cin >> c;
+            big_number f(n1,base);
+            big_number ans = f.mult_digit(c);
+            cout << f << " * " << c << " = " << ans << endl;
+        }
+
+        if (toupper(choice)  == 'P')
         {
             cout << "Enter a number: ";
             cin >> n1;
@@ -85,8 +104,40 @@ int main()
             big_number f(n1);
             big_number g(n2);
             cout << f << " + " << g << " = " << f + g << endl;
+        }
+
+        if (toupper(choice)  == 'M')
+        {
+            cout << "Enter a number: ";
+            cin >> n1;
+            cout << "Enter another number: ";
+            cin >> n2;
+            big_number f(n1);
+            big_number g(n2);
+            cout << f << " - " << g << " = " << f - g << endl;
+        }
+
+        if (toupper(choice)  == 'T')
+        {
+            cout << "Enter a number: ";
+            cin >> n1;
+            cout << "Enter another number: ";
+            cin >> n2;
+            big_number f(n1);
+            big_number g(n2);
+            cout << f << " * " << g << " = " << f * g << endl;
+        }
+
+        if (choice == '+')
+        {
+            cout << "Enter a number: ";
+            cin >> n1;
+            cout << "Enter another number: ";
+            cin >> n2;
+            big_number f(n1);
+            big_number g(n2);
             cout << f << " " << g << endl;
-            //f += g;
+            f += g;
             cout << f << endl;
         }
 
@@ -115,7 +166,6 @@ int main()
             f *= g;
             cout << f << endl;
         }
-
         if (choice == '=')
         {
             cout << "Enter a number: ";

@@ -52,19 +52,34 @@ big_number::big_number(const big_number& m)
     positive = m.positive;
     base = m.base;
     copy_list(m.head_ptr, head_ptr, tail_ptr);
-
 }
 
 //conversion contructor, converts a bignum into another base
-big_number::big_number(const big_number& m, unsigned int base)
+big_number::big_number(const big_number& m, unsigned int b)
 {
-
+    if(m.base == b)//if it's the same base
+    {
+        head_ptr = nullptr;
+        tail_ptr = nullptr;
+        digits = m.digits;
+        positive = m.positive;
+        base = m.base;
+        copy_list(m.head_ptr, head_ptr, tail_ptr);
+    }
+    else
+    {
+        head_ptr = nullptr;
+        tail_ptr = nullptr;
+        positive = m.positive;
+        base = b;
+        unsigned int k = m.base;
+        //need to get multiplication working
+    }
 }
 
 // create a big_number from a string
 big_number::big_number(const string& s, unsigned int b)
 {
-
     digits = 0;
     unsigned index = 0;
     positive = true;
@@ -81,7 +96,6 @@ big_number::big_number(const string& s, unsigned int b)
     head_ptr = new node;
     head_ptr = nullptr;
     tail_ptr = nullptr;
-    
     while ( s[index] == '0' ) //remove leading zeroes
     {
         if ( index + 1 < s.length() ) //only remove leading zeroes if it's not the last digit
@@ -91,16 +105,13 @@ big_number::big_number(const string& s, unsigned int b)
             positive = true; //zero is positive!
             break;
         }
-            
     }
-
     while ( index < s.length()  )
     {
         add_node_tail(head_ptr, tail_ptr, s[index]);
         ++digits;
         ++index;
     }
-
 }
 
 // destructor
@@ -114,14 +125,12 @@ big_number& big_number::operator=(const big_number& m)
 {
     if (this == &m)
         return *this;
-
     head_ptr = nullptr;
     tail_ptr = nullptr;
     digits = m.digits;
     positive = m.positive;
     base = m.base;
     copy_list(m.head_ptr, head_ptr, tail_ptr);
-
     return *this;
 }
 
@@ -167,15 +176,12 @@ big_number& big_number::operator--()
     return *this;
 }
 
-
-
 bool operator >(const big_number& a, const big_number& b)
 {
     if ( compare(a,b) == 'G')
         return true;
     else
         return false;
-
 }
 
 bool operator >=(const big_number& a, const big_number& b)
@@ -220,12 +226,9 @@ bool operator!=(const big_number& a, const big_number& b)
 
 ostream& operator <<(ostream& out, const big_number& n)
 {
-
     if ( n.positive == false ) //if negative, print the negative sign
         out << '-';
-
     node* cursor = n.head_ptr;
-
     for (unsigned i = 0; i < n.digits; i++)
     {
         out << cursor->data;
@@ -277,33 +280,12 @@ big_number operator+(const big_number& a, const big_number& b)
 big_number operator-(const big_number& a, const big_number& b)
 {
     big_number answer;
-    if (a.positive == b.positive)//if it's essentially a sum
-    {
-        if(a.digits > b.digits) //add b to a
-        {
-            answer = a;
-            answer.sum(b);
-        }
-        else
-        {
-            answer = b;
-            answer.sum(a);
-        }
-    }
-    else
-    {
-        if(absoluteValueCompare(a,b) == 'G')
-        {
-            answer = a;
-            answer.minus(b);
-        }
-        else
-        {
-            answer = b;
-            answer.minus(a);
-        }
-    } 
-    return answer;
+    big_number bcopy(b);
+    if(bcopy.positive)
+        bcopy.positive = false;
+    else if(!bcopy.positive)
+        bcopy.positive = true;
+    return a + bcopy;
 }
 
 big_number operator*(const big_number& a, const big_number& b)
@@ -331,8 +313,6 @@ big_number factorial(const big_number& a)
 }
 
 //Helper functions
-
-
 // helper function: assume |*this| >= |m|
 big_number& big_number::sum(const big_number& m)
 {
@@ -380,7 +360,6 @@ big_number& big_number::sum(const big_number& m)
         cursor = cursor->prev;
         ++digits;
     }
-
     if (carry > 0)
     {
         add_node_head(head_ptr, tail_ptr, '1');
@@ -389,7 +368,6 @@ big_number& big_number::sum(const big_number& m)
     return *this;
 }
 
-
 // helper function: assume |*this| >= |m|
 big_number& big_number::minus(const big_number& m)
 {
@@ -397,7 +375,6 @@ big_number& big_number::minus(const big_number& m)
     const node* mcursor = m.tail_ptr;
     int dig1, dig2, result;
     int borrow = 0;
-
     while (cursor != nullptr && mcursor != nullptr)
     {
         dig1 = alpha.find(cursor->data) - borrow; //take away borrow
@@ -420,7 +397,6 @@ big_number& big_number::minus(const big_number& m)
         cursor = cursor->prev;
         mcursor = mcursor->prev;
     }
-
     while (cursor != nullptr) //same as above..replace dig2 with 0
     {
         dig1 = alpha.find(cursor->data) - borrow; //take away borrow
@@ -441,15 +417,50 @@ big_number& big_number::minus(const big_number& m)
     return *this;
 }
 
+//helper function..remove leading zeroes
 void big_number::trim()
 {
-    while (head_ptr != tail_ptr && head_ptr->data == '0')
+    while (head_ptr->data == '0')
     {
+        if(digits == 1)
+        {
+            positive = true;
+            return; 
+        }
         --digits;
         head_ptr = head_ptr->next;
         delete head_ptr->prev;
         head_ptr->prev = nullptr;
     }
+}
+
+//multiply by a single digit;
+big_number big_number::mult_digit(char d)
+{
+    int n = alpha.find(d);
+    big_number product;
+    node* cursor = tail_ptr;
+    node* pcursor = product.tail_ptr;
+    product.digits = 0;  
+    unsigned int dig1, result;
+    unsigned int carry = 0;
+    while (cursor != nullptr)
+    {
+        dig1 = alpha.find(cursor->data);
+        result = carry + dig1 * n;
+        add_node_head(product.head_ptr, product.tail_ptr, alpha[result % base]);
+        carry = result/base;
+        cursor = cursor->prev;
+        pcursor = pcursor->prev;
+        ++product.digits;
+    }
+    if (carry > 0)//if we need to add another digit
+    {
+        add_node_head(product.head_ptr, product.tail_ptr, alpha[carry]);
+        ++product.digits;
+    }
+    product.trim();
+    return product;
 }
 
 //returns 'G' 'L' or 'E' for >, <, or == respectively 
@@ -477,7 +488,6 @@ char absoluteValueCompare (const big_number& a, const big_number& b)
 }
 
 //returns 'G' 'L' or 'E' based on sign only for >, <, or == respectively 
-
 char signCompare (const big_number& a, const big_number& b)
 {
     if ( a.positive == b.positive )
