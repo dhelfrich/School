@@ -85,12 +85,12 @@ int main()
         if (toupper(choice) == 'U')
         {
             cout << "Enter a number: ";
-            cin >> n1;
+            cin >> s;
             cout << "Enter a base: ";
             cin >> base;
             cout << "Enter another number (Digit): ";
             cin >> c;
-            big_number f(n1,base);
+            big_number f(s,base);
             big_number ans = f.mult_digit(c);
             cout << f << " * " << c << " = " << ans << endl;
         }

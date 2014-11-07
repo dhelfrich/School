@@ -379,10 +379,6 @@ big_number& big_number::minus(const big_number& m)
     {
         dig1 = alpha.find(cursor->data) - borrow; //take away borrow
         dig2 = alpha.find(mcursor->data);
-        //if (dig1 < 0)
-        //{
-        //    result = base - dig2 - 1;
-        //}
         if (dig1 < dig2)
         {
             result = base + dig1 - dig2;
@@ -420,18 +416,13 @@ big_number& big_number::minus(const big_number& m)
 //helper function..remove leading zeroes
 void big_number::trim()
 {
-    while (head_ptr->data == '0')
+    while (digits > 1 && head_ptr->data == '0')
     {
-        if(digits == 1)
-        {
-            positive = true;
-            return; 
-        }
         --digits;
-        head_ptr = head_ptr->next;
-        delete head_ptr->prev;
-        head_ptr->prev = nullptr;
+        remove_node(head_ptr, tail_ptr, '0');
     }
+    if (digits == 1)
+        positive = true;
 }
 
 //multiply by a single digit;
@@ -439,6 +430,7 @@ big_number big_number::mult_digit(char d)
 {
     int n = alpha.find(d);
     big_number product;
+    product.base = base;
     node* cursor = tail_ptr;
     node* pcursor = product.tail_ptr;
     product.digits = 0;  
