@@ -59,12 +59,7 @@ big_number::big_number(const big_number& m, unsigned int b)
 {
     if(m.base == b)//if it's the same base
     {
-        head_ptr = nullptr;
-        tail_ptr = nullptr;
-        digits = m.digits;
-        positive = m.positive;
-        base = m.base;
-        copy_list(m.head_ptr, head_ptr, tail_ptr);
+        *this = m;
     }
     else
     {
@@ -73,7 +68,6 @@ big_number::big_number(const big_number& m, unsigned int b)
         positive = m.positive;
         base = b;
         unsigned int k = m.base;
-        //need to get multiplication working
     }
 }
 
@@ -290,7 +284,13 @@ big_number operator-(const big_number& a, const big_number& b)
 
 big_number operator*(const big_number& a, const big_number& b)
 {
-    big_number answer;
+    big_number answer; 
+    answer = a;
+    answer.mult(b);
+    if (a.positive == b.positive)
+        answer.positive = true;
+    else
+        answer.positive = false;
     return answer;
 }
 
@@ -425,34 +425,63 @@ void big_number::trim()
         positive = true;
 }
 
+// helper function: assume |*this| >= |m| and same base
+big_number& big_number::mult(const big_number& m)
+{
+    big_number answer;
+    answer.base = base;
+    node* cursor = m.tail_ptr;
+    int n = 0; //the digit we're looking at
+    while(cursor != nullptr)
+    {
+        answer = answer + this->mult_digit_plus_zeros(cursor->data,n);
+        ++n;
+        cursor = cursor->prev;
+    }
+    *this = answer;
+    return *this;
+}
+
 //multiply by a single digit;
-big_number big_number::mult_digit(char d)
+big_number& big_number::mult_digit(char d)
 {
     int n = alpha.find(d);
-    big_number product;
-    product.base = base;
     node* cursor = tail_ptr;
-    node* pcursor = product.tail_ptr;
-    product.digits = 0;  
+    digits = 0;  
     unsigned int dig1, result;
     unsigned int carry = 0;
     while (cursor != nullptr)
     {
         dig1 = alpha.find(cursor->data);
         result = carry + dig1 * n;
-        add_node_head(product.head_ptr, product.tail_ptr, alpha[result % base]);
+        cursor->data = alpha[result % base];
         carry = result/base;
         cursor = cursor->prev;
-        pcursor = pcursor->prev;
-        ++product.digits;
+        ++digits;
     }
     if (carry > 0)//if we need to add another digit
     {
-        add_node_head(product.head_ptr, product.tail_ptr, alpha[carry]);
-        ++product.digits;
+        add_node_head(head_ptr, tail_ptr, alpha[carry]);
+        ++digits;
     }
-    product.trim();
-    return product;
+    this->trim();
+    return *this;
+}
+
+//multiply by digit  * b^n
+big_number big_number::mult_digit_plus_zeros(char d, unsigned int n)
+{
+    big_number new_num(*this);
+    if(d != '0')
+    {
+        new_num.mult_digit(d);
+        for (unsigned int i = 0; i < n; ++i)
+        {
+            add_node_tail(new_num.head_ptr, new_num.tail_ptr, '0');
+            ++new_num.digits;
+        }
+    }
+    return new_num;
 }
 
 //returns 'G' 'L' or 'E' for >, <, or == respectively 

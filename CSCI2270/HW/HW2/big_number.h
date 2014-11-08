@@ -54,8 +54,9 @@ class big_number
         friend bool operator<=(const big_number& a, const big_number& b);	
         friend bool operator==(const big_number& a, const big_number& b);
         friend bool operator!=(const big_number& a, const big_number& b);
+        big_number& mult_digit(char d);
+        big_number mult_digit_plus_zeros(char d, unsigned int n);
 
-        big_number mult_digit(char d);
     private:
 
         node* head_ptr;
@@ -70,6 +71,7 @@ class big_number
         // helper functions can go here
         big_number& sum(const big_number& m);
         big_number& minus(const big_number& m);
+        big_number& mult(const big_number& m);
         void trim();
         friend char absoluteValueCompare (const big_number& a, const big_number& b); 
         friend char signCompare (const big_number& a, const big_number& b);

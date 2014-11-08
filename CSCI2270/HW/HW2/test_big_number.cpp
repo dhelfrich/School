@@ -91,8 +91,10 @@ int main()
             cout << "Enter another number (Digit): ";
             cin >> c;
             big_number f(s,base);
-            big_number ans = f.mult_digit(c);
-            cout << f << " * " << c << " = " << ans << endl;
+            big_number f2 = f;
+            //f.mult_digit(c);
+            big_number answer = f.mult_digit_plus_zeros(c,3);
+            cout << f << " * " << c << "000 = " << answer << endl;
         }
 
         if (toupper(choice)  == 'P')
