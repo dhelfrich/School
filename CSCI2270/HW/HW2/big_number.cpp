@@ -471,6 +471,7 @@ big_number& big_number::mult(const big_number& m)
         cursor = cursor->prev;
     }
     *this = answer;
+    this->trim();
     return *this;
 }
 
@@ -504,14 +505,11 @@ big_number& big_number::mult_digit(char d)
 big_number big_number::mult_digit_plus_zeros(char d, unsigned int n)
 {
     big_number new_num(*this);
-    if(d != '0')
+    new_num.mult_digit(d);
+    for (unsigned int i = 0; i < n; ++i)
     {
-        new_num.mult_digit(d);
-        for (unsigned int i = 0; i < n; ++i)
-        {
-            add_node_tail(new_num.head_ptr, new_num.tail_ptr, '0');
-            ++new_num.digits;
-        }
+        add_node_tail(new_num.head_ptr, new_num.tail_ptr, '0');
+        ++new_num.digits;
     }
     return new_num;
 }
