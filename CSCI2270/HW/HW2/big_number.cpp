@@ -55,6 +55,7 @@ big_number::big_number(const big_number& m)
 }
 
 //conversion contructor, converts a bignum into another base
+//convert from m.base to b.
 big_number::big_number(const big_number& m, unsigned int b)
 {
     if(m.base == b)//if it's the same base
@@ -66,8 +67,26 @@ big_number::big_number(const big_number& m, unsigned int b)
         head_ptr = nullptr;
         tail_ptr = nullptr;
         positive = m.positive;
-        base = b;
         unsigned int k = m.base;
+        char digit_c;
+        //first convert 0..k to base b. Store result in array
+        big_number *k_digits = new big_number [k+1];
+        //fill array using string constructor
+        string digit = "0";
+        k_digits [0] = big_number(digit, b);
+        for (unsigned int i = 1; i < k+1; ++i)
+        {    
+            digit = ""; 
+            unsigned int remainder = i;
+            while(remainder > 0)
+            {
+                digit_c = alpha[remainder % b];
+                remainder = remainder / b;
+                digit.insert(0, 1, digit_c);
+            }
+            k_digits [i] = big_number(digit, b);     
+        }
+        delete [] k_digits;
     }
 }
 

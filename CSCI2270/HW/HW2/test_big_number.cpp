@@ -19,6 +19,7 @@ int main()
         cout << "Type 'a' to test assignment" << endl;
         cout << "Type '>' to test input operator" << endl;
 
+        cout << "Type 'o' to test my conversion operator" << endl;
         cout << "Type 'u' to test mult_digit operator" << endl;
         cout << "Type 'p' to test + operator" << endl;
         cout << "Type 'm' to test - operator" << endl;
@@ -80,6 +81,15 @@ int main()
             big_number e;
             cin >> e;
             cout << "You entered " << e << endl;
+        }
+        if (toupper(choice) == 'O')
+        {
+            cout << "Enter a base" << endl;
+            cin >> base;
+            //cout << "Enter a number" << endl;
+            //cin >> n1;
+            big_number big_5(5);
+            cout << "9 in base " << base << " is " << big_number(big_5, base) << endl;
         }
 
         if (toupper(choice) == 'U')
