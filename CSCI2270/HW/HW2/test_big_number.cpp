@@ -86,10 +86,11 @@ int main()
         {
             cout << "Enter a base" << endl;
             cin >> base;
-            //cout << "Enter a number" << endl;
-            //cin >> n1;
-            big_number big_5(5);
-            cout << "9 in base " << base << " is " << big_number(big_5, base) << endl;
+            cout << "Enter a number in base 10" << endl;
+            cin >> s;
+            big_number f(s, 10);
+            big_number g(f, base);
+            cout << s << " in base " << base << " is " << g << endl;
         }
 
         if (toupper(choice) == 'U')

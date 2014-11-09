@@ -64,11 +64,14 @@ big_number::big_number(const big_number& m, unsigned int b)
     }
     else
     {
-        head_ptr = nullptr;
-        tail_ptr = nullptr;
+        //head_ptr = nullptr;
+        //tail_ptr = nullptr;
+        *this = big_number();
         positive = m.positive;
+        base = b;
         unsigned int k = m.base;
         char digit_c;
+        unsigned int index;
         //first convert 0..k to base b. Store result in array
         big_number *k_digits = new big_number [k+1];
         //fill array using string constructor
@@ -85,6 +88,16 @@ big_number::big_number(const big_number& m, unsigned int b)
                 digit.insert(0, 1, digit_c);
             }
             k_digits [i] = big_number(digit, b);     
+        }
+        //now that we have the alphabet, we can convert m into the new base
+        node* cursorm = m.head_ptr;
+        string mdigitstring = "";
+        while (cursorm != nullptr)
+        {
+            *this = *this * k_digits[k];
+            index = alpha.find(cursorm->data);
+            *this = *this + k_digits[index];
+            cursorm = cursorm->next;
         }
         delete [] k_digits;
     }
