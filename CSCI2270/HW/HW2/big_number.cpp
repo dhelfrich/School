@@ -163,22 +163,26 @@ big_number& big_number::operator=(const big_number& m)
 // set value to original value + b; return answer in original number's base
 big_number& big_number::operator+= (const big_number& b)
 {
+    *this = *this + b;
     return *this;
 }
 
 // set value to original value * b; return answer in original number's base
 big_number& big_number::operator*= (const big_number& b)
 {
+    *this = *this * b;
     return *this;
 }
 
 // set value to original value - b; return answer in original number's base
 big_number& big_number::operator-= (const big_number& b)
 {
+    *this = *this - b;
     return *this;
 }
 
 // set value to original value / b; return answer in original number's base
+/*
 big_number& big_number::operator/= (const big_number& b)
 {
     return *this;
@@ -189,16 +193,19 @@ big_number& big_number::operator%= (const big_number& b)
 {
     return *this;
 }
+*/
 
 // prefix increment
 big_number& big_number::operator++()
 {
+    *this = *this + big_number("1",base);
     return *this;
 }
 
 // prefix decrement
 big_number& big_number::operator--()
 {
+    *this = *this - big_number("1",base);
     return *this;
 }
 
@@ -274,58 +281,74 @@ istream& operator >>(istream& in, big_number& n)
 big_number operator+(const big_number& a, const big_number& b)
 {
     big_number answer;
-    if (a.positive == b.positive)//if it's essentially a sum
+    if (a.base == b.base)
     {
-        if(a.digits > b.digits) //add b to a
+        if (a.positive == b.positive)//if it's essentially a sum
         {
-            answer = a;
-            answer.sum(b);
+            if(a.digits > b.digits) //add b to a
+            {
+                answer = a;
+                answer.sum(b);
+            }
+            else
+            {
+                answer = b;
+                answer.sum(a);
+            }
         }
         else
         {
-            answer = b;
-            answer.sum(a);
-        }
+            if(absoluteValueCompare(a,b) == 'G')
+            {
+                answer = a;
+                answer.minus(b);
+            }
+            else
+            {
+                answer = b;
+                answer.minus(a);
+            }
+        } 
+        return answer;
     }
     else
-    {
-        if(absoluteValueCompare(a,b) == 'G')
-        {
-            answer = a;
-            answer.minus(b);
-        }
-        else
-        {
-            answer = b;
-            answer.minus(a);
-        }
-    } 
-    return answer;
+        return a + big_number(b, a.base);
 }
 
 big_number operator-(const big_number& a, const big_number& b)
 {
     big_number answer;
-    big_number bcopy(b);
-    if(bcopy.positive)
-        bcopy.positive = false;
-    else if(!bcopy.positive)
-        bcopy.positive = true;
-    return a + bcopy;
+    if (a.base == b.base)
+    {
+        big_number bcopy(b);
+        if(bcopy.positive)
+            bcopy.positive = false;
+        else if(!bcopy.positive)
+            bcopy.positive = true;
+        return a + bcopy;
+    }
+    else
+        return a - big_number(b, a.base);
 }
 
 big_number operator*(const big_number& a, const big_number& b)
 {
     big_number answer; 
-    answer = a;
-    answer.mult(b);
-    if (a.positive == b.positive)
-        answer.positive = true;
+    if (a.base == b.base)
+    {
+        answer = a;
+        answer.mult(b);
+        if (a.positive == b.positive)
+            answer.positive = true;
+        else
+            answer.positive = false;
+        return answer;
+    }
     else
-        answer.positive = false;
-    return answer;
+        return a * big_number(b, a.base);
 }
 
+/*
 big_number operator/(const big_number& a, const big_number& b)
 {
     big_number answer;
@@ -337,11 +360,26 @@ big_number operator%(const big_number& a, const big_number& b)
     big_number answer;
     return answer;
 }
+*/
 
 big_number factorial(const big_number& a)
 {
-    big_number answer;
-    return answer;
+    if (a.digits == 1 && a.head_ptr->data == '0')// a == 0
+        return big_number("1",a.base);
+    else
+    {
+        return factorial(a - big_number(1)) * a;
+    }
+}
+
+big_number tail_factorial(big_number n, big_number accumulator)
+{
+    while (n != 0) 
+    {
+        accumulator *= n;
+        --n;
+    }
+    return accumulator;
 }
 
 //Helper functions

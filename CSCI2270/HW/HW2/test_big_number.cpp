@@ -7,7 +7,6 @@ int main()
     int n1, n2;
     unsigned int base;
     string s;
-    char c;
 
     char choice;
     do
@@ -24,7 +23,9 @@ int main()
         cout << "Type 'p' to test + operator" << endl;
         cout << "Type 'm' to test - operator" << endl;
         cout << "Type 't' to test * operator" << endl;
-
+        cout << "Type '!' to test factorial" << endl;
+        cout << "Type 'F' to test tail factorial" << endl;
+        
         cout << "Type '+' to test += operator" << endl;
         cout << "Type '-' to test -= operator" << endl;
         cout << "Type '*' to test *= operator" << endl;
@@ -82,6 +83,7 @@ int main()
             cin >> e;
             cout << "You entered " << e << endl;
         }
+
         if (toupper(choice) == 'O')
         {
             cout << "Enter a base" << endl;
@@ -93,8 +95,10 @@ int main()
             cout << s << " in base " << base << " is " << g << endl;
         }
 
+        /*
         if (toupper(choice) == 'U')
         {
+            char c;
             cout << "Enter a number: ";
             cin >> s;
             cout << "Enter a base: ";
@@ -107,6 +111,7 @@ int main()
             big_number answer = f.mult_digit_plus_zeros(c,3);
             cout << f << " * " << c << "000 = " << answer << endl;
         }
+        */
 
         if (toupper(choice)  == 'P')
         {
@@ -140,7 +145,24 @@ int main()
             big_number g(n2);
             cout << f << " * " << g << " = " << f * g << endl;
         }
+        
+        if (choice == '!')
+        {
+            cout << "Enter a number: ";
+            cin >> n1;
+            big_number f(n1);
+            cout << n1 << " factorial is " << factorial(f) << endl;
 
+        }
+
+        if (toupper(choice) == 'F')
+        {
+            cout << "Enter a number: ";
+            cin >> n1;
+            big_number f(n1);
+            cout << n1 << " factorial is " << tail_factorial(f, big_number(1)) << endl;
+
+        }
         if (choice == '+')
         {
             cout << "Enter a number: ";
@@ -179,6 +201,7 @@ int main()
             f *= g;
             cout << f << endl;
         }
+        
         if (choice == '=')
         {
             cout << "Enter a number: ";

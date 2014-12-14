@@ -46,6 +46,7 @@ class big_number
         friend big_number operator%(const big_number& a, const big_number& b);
         // hard to do without fast multiplication
         friend big_number factorial(const big_number& a);
+        friend big_number tail_factorial(big_number n, big_number accumulator);
 
         // comparison operators
         friend bool operator>(const big_number& a, const big_number& b);
@@ -54,8 +55,6 @@ class big_number
         friend bool operator<=(const big_number& a, const big_number& b);	
         friend bool operator==(const big_number& a, const big_number& b);
         friend bool operator!=(const big_number& a, const big_number& b);
-        big_number& mult_digit(char d);
-        big_number mult_digit_plus_zeros(char d, unsigned int n);
 
     private:
 
@@ -72,6 +71,8 @@ class big_number
         big_number& sum(const big_number& m);
         big_number& minus(const big_number& m);
         big_number& mult(const big_number& m);
+        big_number& mult_digit(char d);
+        big_number mult_digit_plus_zeros(char d, unsigned int n);
         void trim();
         friend char absoluteValueCompare (const big_number& a, const big_number& b); 
         friend char signCompare (const big_number& a, const big_number& b);

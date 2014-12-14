@@ -14,16 +14,16 @@ all:
 
 # this compiles your test program and your queue and singly_linked_list class together
 test_big_number: test_big_number.o doubly_linked_list.o big_number.o
-	g++ -std=c++0x -Wall -g test_big_number.o doubly_linked_list.o big_number.o -o test_big_number 
+	g++ -std=c++0x -Wall -g -O2 test_big_number.o doubly_linked_list.o big_number.o -o test_big_number 
 
 doubly_linked_list.o: doubly_linked_list.h doubly_linked_list.cpp
-	g++ -std=c++0x -Wall -g -c doubly_linked_list.cpp -o doubly_linked_list.o
+	g++ -std=c++0x -Wall -g -O2 -c doubly_linked_list.cpp -o doubly_linked_list.o
 
 big_number.o: big_number.h big_number.cpp
-	g++ -std=c++0x -Wall -g -c big_number.cpp -o big_number.o
+	g++ -std=c++0x -Wall -g -O2 -c big_number.cpp -o big_number.o
 
 test_big_number.o: doubly_linked_list.h test_big_number.cpp big_number.h
-	g++ -std=c++0x -Wall -g -c test_big_number.cpp -o test_big_number.o
+	g++ -std=c++0x -Wall -g -O2 -c test_big_number.cpp -o test_big_number.o
 
 # this deletes all the output files
 clean:

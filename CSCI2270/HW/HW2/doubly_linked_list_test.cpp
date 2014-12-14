@@ -13,7 +13,6 @@ int main()
         add_node_head(head, tail, '0' + i);
 
     }
-
     std::cout << "Printing head list forward" << std::endl;
     print_list(head);
     std::cout << "Printing head list backwards" << std::endl;
@@ -40,5 +39,7 @@ int main()
     print_list(head);
     std::cout << "Printing head list backwards" << std::endl;
     print_list_backwards(tail);
+    clear_list(head, tail);
+    clear_list(head2, tail2);
     return 0;
 }

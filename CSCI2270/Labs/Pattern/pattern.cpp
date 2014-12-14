@@ -30,7 +30,7 @@ void pattern(ostream& outs, unsigned int n, unsigned int i)
             outs << " ";
         for (unsigned int k = 0; k < n; ++k)//print out n asterisks
             outs << "*";
-        pattern(outs, n/2, i + n/2);
+        pattern(outs, n/2 , i + n/2);
     }
 }
 
